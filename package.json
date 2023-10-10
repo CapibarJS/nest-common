@@ -1,0 +1,34 @@
+{
+  "name": "@capibar/nest-common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "release": "standard-version -a --no-verify",
+    "release:patch": "standard-version -a --release-as patch",
+    "release:minor": "standard-version -a --release-as minor",
+    "release:major": "standard-version -a --release-as major"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@nestjs/common": "10.2.6",
+    "@nestjs/swagger": "^6.3.0",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.14.0",
+    "nestjs-form-data": "1.9.0",
+    "@prisma/client": "^5.1.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "5.62.0",
+    "@typescript-eslint/parser": "5.62.0",
+    "eslint": "8.47.0",
+    "eslint-config-prettier": "8.10.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "prettier": "3.0.3",
+    "standard-version": "9.5.0",
+    "typescript": "5.2.2",
+    "prisma": "^5.1.1"
+  }
+}
