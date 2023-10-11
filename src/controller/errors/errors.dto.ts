@@ -1,5 +1,5 @@
 import { ErrorCodes } from './error-codes.enum';
-import {Validate} from "../../validator";
+import { Validate } from '../../validator';
 
 export class ErrorDto {
     @Validate.Number({ description: 'Код статуса', example: 400 })

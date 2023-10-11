@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ModelMapperBase } from '../../validator/mapper';
-import {SuccessResponse} from "../request/shared.dto";
-import {PrismaRepository, RepositoryType} from "../../prisma/prisma.repository";
+import { SuccessResponse } from '../request/shared.dto';
+import { PrismaRepository, RepositoryType } from '../../prisma/prisma.repository';
 
 @Injectable()
 export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate = TModel, TDtoUpdate = TDtoCreate> {

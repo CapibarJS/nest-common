@@ -1,4 +1,4 @@
-import {Validate} from "../../validator";
+import { Validate } from '../../validator';
 
 export class SuccessResponse {
     @Validate.Boolean({ description: 'Статус', example: true, required: true })
