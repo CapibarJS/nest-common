@@ -9,8 +9,8 @@ import {
     ApiOperation,
 } from '@nestjs/swagger';
 import { FormDataRequest } from 'nestjs-form-data';
-import {BadRequestDto, InternalServerErrorDto, NotFoundRequest} from "./errors";
-import {SuccessResponse} from "./request/shared.dto";
+import { BadRequestDto, InternalServerErrorDto, NotFoundRequest } from './errors';
+import { SuccessResponse } from './request/shared.dto';
 
 type HandlerOptionsWrite = {
     /**
