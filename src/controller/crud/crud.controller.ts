@@ -10,7 +10,7 @@ import {
 import { CrudService } from './crud.service';
 import { QueryFilter, QueryFilterHandler } from '../filter/query-filter.decorator';
 import { QueryFilterInput } from '../filter/query-filter.input';
-import {Handler} from "../handler.decorator";
+import { Handler } from '../handler.decorator';
 
 type DtoOptions<T = any, C = any, U = any> = {
     Read: T;
