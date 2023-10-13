@@ -1,4 +1,4 @@
-import { applyDecorators, Delete, Get, HttpCode, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {applyDecorators, Delete, Get, HttpCode, Patch, Post, Put, UsePipes, ValidationPipe} from '@nestjs/common';
 import {
     ApiBadRequestResponse,
     ApiBody,
@@ -108,6 +108,19 @@ export class Handler {
             UsePipes(new ValidationPipe({ transform: true })),
             //
             Patch(options.path),
+            Handler.ApiOk(options),
+            Handler.Docs(options),
+            Handler.ApiErrors(),
+        ];
+        if (options.payload) decorators.push(ApiBody({ type: options.payload, isArray: options.payloadIsArray }));
+        return applyDecorators(...decorators);
+    }
+
+    static Put(options: PatchHandlerOptions) {
+        const decorators = [
+            UsePipes(new ValidationPipe({ transform: true })),
+            //
+            Put(options.path),
             Handler.ApiOk(options),
             Handler.Docs(options),
             Handler.ApiErrors(),
