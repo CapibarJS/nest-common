@@ -1,4 +1,11 @@
 # PRO-STROY service
+## 1.2.0 (2023-10-13)
+
+
+### Features
+
+* add index.ts for package.json ([0d4a730](https://github.com/CapibarJS/nest-common/commit/0d4a7308765a9e6dce0c266ad908ff20822b2bef))
+
 ## 1.1.0 (2023-10-13)
 
 
