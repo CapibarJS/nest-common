@@ -5,29 +5,29 @@ import { PrismaRepository, RepositoryType } from '../../prisma';
 
 @Injectable()
 export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate = TModel, TDtoUpdate = TDtoCreate> {
-    constructor(protected readonly repository: PrismaRepository<T>, protected Mapper: ModelMapperBase<any, TModel>) {}
+    constructor(protected readonly repository: PrismaRepository<T>, protected Mapper: ModelMapperBase) {}
 
     async create(data: TDtoCreate) {
         const entity = await this.repository.create.call(this.repository, { data });
-        return this.Mapper.mapToResponse(entity);
+        return this.Mapper.mapToResponse<TModel>(entity);
     }
 
     async createMany(list: TDtoCreate[]) {
         const created = await this.repository.getPrisma.$transaction(
             list.map((data) => this.repository.create.call(this.repository, { data })),
         );
-        return this.Mapper.mapToListResponse(created);
+        return this.Mapper.mapToListResponse<TModel>(created);
     }
 
     async findMany(...args: Parameters<typeof this.repository.findMany> | undefined) {
         const entities = await this.repository.findMany.call(this.repository, ...args);
-        return this.Mapper.mapToListResponse(entities);
+        return this.Mapper.mapToListResponse<TModel>(entities);
     }
 
     async list(...args: Parameters<typeof this.repository.findMany> | undefined) {
         const entities = await this.repository.findMany.call(this.repository, ...args);
         const total = (await this.repository.count.call(this.repository, ...args)) as number;
-        const items = this.Mapper.mapToListResponse(entities);
+        const items = this.Mapper.mapToListResponse<TModel>(entities);
         return { total, items };
     }
 
@@ -35,12 +35,12 @@ export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate 
         const filter = args?.[0];
         const entity = await this.repository.findUnique.call(this.repository, { where: { id, ...filter?.where } });
         if (!entity) throw new NotFoundException(`${this.repository.model} with id=${id} not found`);
-        return this.Mapper.mapToResponse(entity);
+        return this.Mapper.mapToResponse<TModel>(entity);
     }
 
     async update(id: string, data: TDtoUpdate) {
         const entity = await this.repository.update.call(this.repository, { where: { id }, data });
-        return this.Mapper.mapToResponse(entity);
+        return this.Mapper.mapToResponse<TModel>(entity);
     }
 
     async deleteById(id: string): Promise<SuccessResponse> {
@@ -54,7 +54,7 @@ export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate 
         for (const { id, ...rest } of data) {
             results.push(this.repository.update.call(this.repository, { where: { id }, data: rest }));
         }
-        return this.Mapper.mapToListResponse(await Promise.all(results));
+        return this.Mapper.mapToListResponse<TModel>(await Promise.all(results));
     }
 
     async deleteManyByIds(ids: string[]): Promise<SuccessResponse> {
