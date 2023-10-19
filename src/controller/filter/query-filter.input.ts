@@ -20,9 +20,6 @@ export class QueryFilterInput implements QueryFilterModel {
     @Validate.Object({ description: 'Выборка полей', example: { name: true } })
     select: QueryFilterSelectModel;
 
-    @Validate.Boolean({ description: 'Включить пагинацию', example: { name: false } })
-    pagination: boolean;
-
     static getOptions(filter: QueryFilterModel) {
         return {
             select: filter?.select,
@@ -30,7 +27,6 @@ export class QueryFilterInput implements QueryFilterModel {
             take: filter?.take,
             skip: filter?.skip,
             orderBy: filter?.sort,
-            pagination: filter?.pagination,
         };
     }
 }

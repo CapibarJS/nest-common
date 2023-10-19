@@ -57,7 +57,6 @@ export class QueryFilterService {
             sort,
             filter,
             select: Object.keys(select).length ? select : undefined,
-            pagination: this.query.pagination || false,
         };
     }
 

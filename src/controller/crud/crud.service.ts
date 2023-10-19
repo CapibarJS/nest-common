@@ -5,7 +5,7 @@ import { PrismaRepository, RepositoryType } from '../../prisma';
 
 @Injectable()
 export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate = TModel, TDtoUpdate = TDtoCreate> {
-    constructor(protected readonly repository: PrismaRepository<T>, protected Mapper: ModelMapperBase<any>) {}
+    constructor(protected readonly repository: PrismaRepository<T>, protected Mapper: ModelMapperBase<any, TModel>) {}
 
     async create(data: TDtoCreate) {
         const entity = await this.repository.create.call(this.repository, { data });
@@ -19,16 +19,16 @@ export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate 
         return this.Mapper.mapToListResponse(created);
     }
 
-    async findMany(...args: (Parameters<typeof this.repository.findMany> & { pagination?: boolean }) | undefined) {
-        const { pagination, ..._args } = args;
-        console.log({
-            pagination,
-            _args,
-        });
-        const entities = await this.repository.findMany.call(this.repository, ..._args);
-        const total = await this.repository.count.call(this.repository, ..._args);
+    async findMany(...args: Parameters<typeof this.repository.findMany> | undefined) {
+        const entities = await this.repository.findMany.call(this.repository, ...args);
+        return this.Mapper.mapToListResponse(entities);
+    }
+
+    async list(...args: Parameters<typeof this.repository.findMany> | undefined) {
+        const entities = await this.repository.findMany.call(this.repository, ...args);
+        const total = (await this.repository.count.call(this.repository, ...args)) as number;
         const items = this.Mapper.mapToListResponse(entities);
-        return pagination ? { total, items } : items;
+        return { total, items };
     }
 
     async findById(id: string, ...args: Parameters<typeof this.repository.findUnique> | undefined | any) {
