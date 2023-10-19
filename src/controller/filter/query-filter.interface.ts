@@ -5,6 +5,7 @@ export interface QueryFilterModel {
     sort: QueryFilterSortModel[];
     filter: QueryFilterWhereModel;
     select: QueryFilterSelectModel;
+    pagination: boolean;
 }
 
 export interface QueryFilterSortModel {

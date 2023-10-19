@@ -57,18 +57,14 @@ export class QueryFilterService {
             sort,
             filter,
             select: Object.keys(select).length ? select : undefined,
+            pagination: this.query.pagination || false,
         };
     }
 
     private parsePage(): number {
         const pageRequestData = this.query[this.options.pageParamName];
-
         const page = parseInt(pageRequestData) || this.options.pageDefaultValue;
-
-        if (page < 1) {
-            return this.options.pageDefaultValue;
-        }
-
+        if (page < 1) return this.options.pageDefaultValue;
         return page;
     }
 
@@ -86,9 +82,7 @@ export class QueryFilterService {
 
     private parseFilter(): object {
         let filter: object = {};
-
         const filterRequestData = this.query[this.options.filterParamName] || this.options.filterDefaultValue;
-
         try {
             filter = JSON.parse(filterRequestData);
         } catch (e) {
