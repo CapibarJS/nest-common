@@ -1,5 +1,5 @@
 # PRO-STROY service
-### [1.2.9](https://github.com/CapibarJS/nest-common/compare/v1.2.7...v1.2.9) (2023-10-23)
+### 1.2.9 (2023-10-23)
 
 
 ### Chore
