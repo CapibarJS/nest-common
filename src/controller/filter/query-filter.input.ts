@@ -5,7 +5,7 @@ export class QueryFilterInput implements QueryFilterModel {
     @Validate.Number({ description: 'Номер страницы', example: 1, isInt: true })
     page: number;
 
-    @Validate.Number({ description: 'Сколько элементов нужно пропустить', example: 10, isInt: true })
+    // @Validate.Number({ description: 'Сколько элементов нужно пропустить', example: 10, isInt: true })
     skip: number;
 
     @Validate.Number({ description: 'Сколько элементов нужно взять', isInt: true })
