@@ -6,10 +6,7 @@ export type RepositoryType = Exclude<keyof PrismaClient, symbol | `$${string}`>;
 
 @Injectable()
 export class PrismaRepository<K extends RepositoryType> {
-    constructor(
-        protected readonly prisma: PrismaService,
-        public readonly model: K,
-    ) {}
+    constructor(protected readonly prisma: PrismaService, public readonly model: K) {}
 
     get getPrisma() {
         return this.prisma;

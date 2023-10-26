@@ -54,7 +54,7 @@ const IsTypes = {
 // eslint-disable-next-line @typescript-eslint/ban-types
 const IsOptionalIf = (required: Function) =>
     ValidateIf((object, value) => {
-        return !required(object) ? (value !== null && value !== undefined) : false;
+        return !required(object) ? value !== null && value !== undefined : false;
     });
 
 // ======--- Transform function ---======
