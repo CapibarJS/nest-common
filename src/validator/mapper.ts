@@ -5,7 +5,7 @@ type ModelMapperOptions<T, K = T> = {
     callback: ModelMapperCallback<T, K>;
 };
 
-export class ModelMapperBase<TModel, TResult = TModel, TModelData = TResult> {
+export class ModelMapperBase<TModel = any, TResult = TModel, TModelData = TResult> {
     constructor(
         protected fields: (keyof TResult)[],
         protected target?: TModelData,
@@ -14,23 +14,23 @@ export class ModelMapperBase<TModel, TResult = TModel, TModelData = TResult> {
         if (!this.options) this.options = {} as ModelMapperOptions<TModel, TModelData>;
     }
 
-    mapToResponse(
+    mapToResponse<T = TResult>(
         data: TModel | TModelData,
         fields: (keyof TResult)[] = this.fields,
         options?: ModelMapperOptions<TModel, TModelData>,
-    ): TResult {
+    ): T {
         return {
             ...(!options?.hideId && { id: String(data?.['_id'] ?? data?.['id']) }),
             ...Object.fromEntries(Object.entries(data).filter(([key]) => fields.includes(key as keyof TResult))),
             ...options?.callback?.(data),
-        } as TResult;
+        } as T;
     }
 
-    mapToListResponse(
+    mapToListResponse<T = TResult>(
         arr: Array<TModel | TModelData>,
         fields: (keyof TResult)[] = this.fields,
         options?: ModelMapperOptions<TModel, TModelData>,
     ) {
-        return arr.map((x) => this.mapToResponse(x, fields, options));
+        return arr.map((x) => this.mapToResponse<T>(x, fields, options)) as T[];
     }
 }

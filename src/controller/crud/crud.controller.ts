@@ -63,6 +63,21 @@ export const CrudController = (options: CrudControllerOptions) => {
         constructor(public service: TService) {}
 
         @Handler.Get({
+            path: 'list',
+            operation: 'list',
+            description: 'Получение постраничного списка элементов с фильтрацией и сортировкой',
+            response: options.dto.Read,
+            isArray: true,
+        })
+        @QueryFilterHandler()
+        async list(
+            @QueryFilter() queryFilter: QueryFilterInput,
+        ): Promise<{ total: number; items: (TRDto | unknown)[] }> {
+            const filter = QueryFilterInput.getOptions(queryFilter);
+            return this.service.list({ ...filter });
+        }
+
+        @Handler.Get({
             path: 'findMany',
             operation: 'findMany',
             description: 'Получение списка элементов с фильтрацией и сортировкой',
@@ -70,9 +85,8 @@ export const CrudController = (options: CrudControllerOptions) => {
             isArray: true,
         })
         @QueryFilterHandler()
-        async findMany(@QueryFilter() queryFilter: QueryFilterInput): Promise<TRDto[]> {
+        async findMany(@QueryFilter() queryFilter: QueryFilterInput): Promise<(TRDto | unknown)[]> {
             const filter = QueryFilterInput.getOptions(queryFilter);
-            // @ts-ignore
             return this.service.findMany({ ...filter });
         }
 
@@ -82,7 +96,7 @@ export const CrudController = (options: CrudControllerOptions) => {
             description: 'Получение элемента по ID',
             response: options.dto.Read,
         })
-        async findById(@Param('id') id: string): Promise<TRDto> {
+        async findById(@Param('id') id: string): Promise<TRDto | unknown> {
             return this.service.findById(id);
         }
 
@@ -94,7 +108,7 @@ export const CrudController = (options: CrudControllerOptions) => {
             response: options.dto.Read,
             payload: options.dto.Create,
         })
-        async create(@Body() payload: TCDto): Promise<TRDto> {
+        async create(@Body() payload: TCDto): Promise<TRDto | unknown> {
             return this.service.create(payload);
         }
 
@@ -106,7 +120,7 @@ export const CrudController = (options: CrudControllerOptions) => {
             response: options.dto.Read,
             payload: options.dto.Create,
         })
-        async update(@Param('id') id: string, @Body() payload: TUDto): Promise<TRDto> {
+        async update(@Param('id') id: string, @Body() payload: TUDto): Promise<TRDto | unknown> {
             return this.service.update(id, payload);
         }
 

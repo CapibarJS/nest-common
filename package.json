@@ -1,6 +1,6 @@
 {
   "name": "@capibar/nest-common",
-  "version": "1.0.1",
+  "version": "1.2.10",
   "description": "",
   "license": "MIT",
   "main": "dist/index.js",
@@ -17,10 +17,12 @@
     "@nestjs/common": "9.3.12",
     "@nestjs/swagger": "6.3.0",
     "@prisma/client": "5.1.1",
+    "@nestjs/core": "9.3.12",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
     "lodash": "4.17.21",
-    "nestjs-form-data": "1.9.0"
+    "nestjs-form-data": "1.9.0",
+    "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
     "@types/jest": "27.5.0",

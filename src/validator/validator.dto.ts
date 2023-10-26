@@ -4,7 +4,6 @@ import {
     IsArray,
     IsBoolean,
     IsDate,
-    IsDecimal,
     IsEmail,
     IsEnum,
     IsInt,
@@ -41,20 +40,19 @@ import { Options, RootOption, ValidationType } from './validator.type';
 
 // ======--- Validate Type ---======
 const IsTypes = {
-    number: (options: ValidationOptions) => IsNumber({ maxDecimalPlaces: 24 }, options),
     string: IsString,
+    number: (options: ValidationOptions) => IsNumber({ maxDecimalPlaces: 24 }, options),
     boolean: IsBoolean,
     date: IsDate,
     object: IsObject,
     uuid: (options: ValidationOptions) => IsUUID('all', options),
     mongoId: IsMongoId,
-    enum: undefined,
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const IsOptionalIf = (required: Function) =>
     ValidateIf((object, value) => {
-        return !required(object) ? value !== null && value !== undefined : false;
+        return !required(object) ? !!(value !== null && value !== undefined) : false;
     });
 
 // ======--- Transform function ---======
@@ -63,7 +61,6 @@ const TransformFunc = {
     number: transformToNumber,
     boolean: transformToBoolean,
     date: toDateTime,
-    object: (args: any) => args?.obj?.[args?.key],
 };
 
 // ======--- Swagger Type ---======
@@ -90,7 +87,7 @@ function defaultValidateDecorations(options: RootOption) {
             ? () => options.example
             : options.example;
 
-    const apiPropertyType: 'hide' | 'optional' | undefined = options?.exclude
+    const apiPropertyType: 'hide' | 'optional' = options?.exclude
         ? 'hide'
         : options?.hide
         ? 'hide'
@@ -106,7 +103,12 @@ function defaultValidateDecorations(options: RootOption) {
     // ======--- Options ---======
     if (!isOptional && typeof options?.required === 'function') {
         decorates.push(IsOptionalIf(options.required));
-    } else if (isOptional) decorates.push(IsOptional());
+    } else if (isOptional)
+        decorates.push(
+            // разрешено посылать пустые строки как способ "очищения" поля
+            ValidateIf((_, value) => value !== ''),
+            IsOptional(),
+        );
 
     const isTypeFunc = IsTypes[options.type]?.({ each: isArray });
     if (options?.type && isTypeFunc) decorates.push(isTypeFunc);
@@ -218,6 +220,16 @@ export class Validate {
         const opt = Validate.getOptions(options, 'mongoId');
         const decorates = [...defaultValidateDecorations(opt)];
 
+        // Декоратор для преобразования пустой строки в null
+        // Prisma выбрасывает исключение при пустой строке поля ID в БД
+        decorates.push(
+            Transform((params) => {
+                if (params.value === '') return null;
+
+                return params.value;
+            }),
+        );
+
         // ======--- Options ---======
 
         return applyDecorators(...decorates);
@@ -286,8 +298,6 @@ export class Validate {
      * - @Validate.Number({ descriptions: '...', min: 5, max: 10 })
      * @example Поле преобразовывает и валидирует значение в Int. Type: **Int**
      * - @Validate.Number({ descriptions: '...', isInt: true })
-     * @example Поле преобразовывает значение в Float. Type: **Float**
-     * - @Validate.Number({ descriptions: '...', isFloat: true })
      * @param {Options.number} options
      * @constructor
      */
@@ -299,7 +309,6 @@ export class Validate {
         if (options?.max) decorates.push(Max(options.max));
         if (options?.min) decorates.push(Min(options.min));
         if (options?.isInt) decorates.push(IsInt());
-        if (options?.isFloat) decorates.push(IsDecimal());
 
         return applyDecorators(...decorates);
     }
