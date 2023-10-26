@@ -6,6 +6,7 @@ import {
     QueryFilterSelectModel,
     QueryFilterSortModel,
 } from './query-filter.interface';
+import { set } from 'lodash';
 
 const defaultQueryFilterOptions: QueryFilterOptions = {
     limitParamName: 'take',
@@ -126,7 +127,14 @@ export class QueryFilterService {
                         sortDirection = 'desc';
                     }
 
-                    sort.push({ [sortParam]: sortDirection });
+                    // Проверка на объект
+                    const isPossibleObject = sortParam.split('.');
+
+                    if (isPossibleObject.length > 1) {
+                        sort.push(set({}, sortParam, sortDirection));
+                    } else {
+                        sort.push({ [sortParam]: sortDirection });
+                    }
                 }
             }
         }
