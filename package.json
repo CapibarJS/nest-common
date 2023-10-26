@@ -2,33 +2,39 @@
   "name": "@capibar/nest-common",
   "version": "1.0.1",
   "description": "",
+  "license": "MIT",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "release": "standard-version -a --no-verify",
-    "release:patch": "standard-version -a --release-as patch",
+    "release:major": "standard-version -a --release-as major",
     "release:minor": "standard-version -a --release-as minor",
-    "release:major": "standard-version -a --release-as major"
+    "release:patch": "standard-version -a --release-as patch"
   },
-  "license": "MIT",
+  "types": "dist/index.d.ts",
   "dependencies": {
-    "@nestjs/common": "10.2.6",
-    "@nestjs/swagger": "^6.3.0",
+    "@nestjs/common": "9.3.12",
+    "@nestjs/swagger": "6.3.0",
+    "@prisma/client": "5.1.1",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
-    "nestjs-form-data": "1.9.0",
-    "@prisma/client": "^5.1.1"
+    "lodash": "4.17.21",
+    "nestjs-form-data": "1.9.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "5.62.0",
-    "@typescript-eslint/parser": "5.62.0",
+    "@types/jest": "27.5.0",
+    "@types/lodash": "4.14.200",
+    "@typescript-eslint/eslint-plugin": "6.1.0",
+    "@typescript-eslint/parser": "6.1.0",
     "eslint": "8.47.0",
     "eslint-config-prettier": "8.10.0",
     "eslint-plugin-prettier": "4.2.1",
-    "prettier": "3.0.3",
+    "jest": "28.0.3",
+    "prettier": "2.3.2",
+    "prisma": "5.1.1",
     "standard-version": "9.5.0",
-    "typescript": "5.2.2",
-    "prisma": "^5.1.1"
+    "ts-jest": "28.0.1",
+    "typescript": "5.2.2"
   }
 }

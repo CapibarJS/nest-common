@@ -1,5 +1,5 @@
 import { QueryFilterModel, QueryFilterSelectModel, QueryFilterSortModel } from './query-filter.interface';
-import {Validate} from "../../validator";
+import { Validate } from '../../validator';
 
 export class QueryFilterInput implements QueryFilterModel {
     @Validate.Number({ description: 'Номер страницы', example: 1, isInt: true })
