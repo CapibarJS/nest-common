@@ -6,6 +6,7 @@ import {
     QueryFilterSelectModel,
     QueryFilterSortModel,
 } from './query-filter.interface';
+import { createObjectFromString } from '../../helpers';
 
 const defaultQueryFilterOptions: QueryFilterOptions = {
     limitParamName: 'take',
@@ -118,8 +119,7 @@ export class QueryFilterService {
                         sortParam = sortParam.substring(1);
                         sortDirection = 'desc';
                     }
-
-                    sort.push({ [sortParam]: sortDirection });
+                    sort.push(createObjectFromString(sortParam, sortDirection));
                 }
             }
         }
