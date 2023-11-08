@@ -31,19 +31,19 @@ export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate 
         return { total, items };
     }
 
-    async findById(id: string, ...args: Parameters<typeof this.repository.findUnique> | undefined | any) {
+    async findById(id: string | number, ...args: Parameters<typeof this.repository.findUnique> | undefined | any) {
         const filter = args?.[0];
         const entity = await this.repository.findUnique.call(this.repository, { where: { id, ...filter?.where } });
         if (!entity) throw new NotFoundException(`${this.repository.model} with id=${id} not found`);
         return this.Mapper.mapToResponse<TModel>(entity);
     }
 
-    async update(id: string, data: TDtoUpdate) {
+    async update(id: string | number, data: TDtoUpdate) {
         const entity = await this.repository.update.call(this.repository, { where: { id }, data });
         return this.Mapper.mapToResponse<TModel>(entity);
     }
 
-    async deleteById(id: string): Promise<SuccessResponse> {
+    async deleteById(id: string | number): Promise<SuccessResponse> {
         await this.repository.delete.call(this.repository, { where: { id } });
         return { status: true };
     }
@@ -57,7 +57,7 @@ export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate 
         return this.Mapper.mapToListResponse<TModel>(await Promise.all(results));
     }
 
-    async deleteManyByIds(ids: string[]): Promise<SuccessResponse> {
+    async deleteManyByIds(ids: (string | number)[]): Promise<SuccessResponse> {
         await this.repository.deleteMany.call(this.repository, { where: { id: { in: ids } } });
         return { status: true };
     }
