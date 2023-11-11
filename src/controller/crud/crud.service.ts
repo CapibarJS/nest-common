@@ -25,10 +25,9 @@ export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate 
     }
 
     async list(...args: Parameters<typeof this.repository.findMany> | undefined) {
-        console.log(args)
+        const entities = await this.repository.findMany.call(this.repository, ...args);
         // @ts-ignore
-        const entities = await this.repository.findMany.call(this.repository, { where: args?.[0]?.where });
-        const total = (await this.repository.count.call(this.repository, ...args)) as number;
+        const total = (await this.repository.count.call(this.repository, { where: args?.[0]?.where })) as number;
         const items = this.Mapper.mapToListResponse<TModel>(entities);
         return { total, items };
     }
