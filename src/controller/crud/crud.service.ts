@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ModelMapperBase } from '../../validator';
-import { SuccessResponse } from '../request/shared.dto';
-import { PrismaRepository, RepositoryType } from '../../prisma';
+import {Injectable, NotFoundException} from '@nestjs/common';
+import {ModelMapperBase} from '../../validator';
+import {SuccessResponse} from '../request/shared.dto';
+import {PrismaRepository, RepositoryType} from '../../prisma';
 
 @Injectable()
 export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate = TModel, TDtoUpdate = TDtoCreate> {
@@ -25,7 +25,7 @@ export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate 
     }
 
     async list(...args: Parameters<typeof this.repository.findMany> | undefined) {
-        const entities = await this.repository.findMany.call(this.repository, ...args);
+        const entities = await this.repository.findMany.call(this.repository, { ...args.filter });
         const total = (await this.repository.count.call(this.repository, ...args)) as number;
         const items = this.Mapper.mapToListResponse<TModel>(entities);
         return { total, items };
