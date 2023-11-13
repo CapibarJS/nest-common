@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ModelMapperBase } from '../../validator';
-import { SuccessResponse } from '../request/shared.dto';
-import { PrismaRepository, RepositoryType } from '../../prisma';
+import {Injectable, NotFoundException} from '@nestjs/common';
+import {ModelMapperBase} from '../../validator';
+import {SuccessResponse} from '../request/shared.dto';
+import {PrismaRepository, RepositoryType} from '../../prisma';
 
 @Injectable()
 export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate = TModel, TDtoUpdate = TDtoCreate> {
@@ -26,24 +26,25 @@ export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate 
 
     async list(...args: Parameters<typeof this.repository.findMany> | undefined) {
         const entities = await this.repository.findMany.call(this.repository, ...args);
-        const total = (await this.repository.count.call(this.repository, ...args)) as number;
+        // @ts-ignore
+        const total = (await this.repository.count.call(this.repository, { where: args?.[0]?.where })) as number;
         const items = this.Mapper.mapToListResponse<TModel>(entities);
         return { total, items };
     }
 
-    async findById(id: string, ...args: Parameters<typeof this.repository.findUnique> | undefined | any) {
+    async findById(id: string | number, ...args: Parameters<typeof this.repository.findUnique> | undefined | any) {
         const filter = args?.[0];
         const entity = await this.repository.findUnique.call(this.repository, { where: { id, ...filter?.where } });
         if (!entity) throw new NotFoundException(`${this.repository.model} with id=${id} not found`);
         return this.Mapper.mapToResponse<TModel>(entity);
     }
 
-    async update(id: string, data: TDtoUpdate) {
+    async update(id: string | number, data: TDtoUpdate) {
         const entity = await this.repository.update.call(this.repository, { where: { id }, data });
         return this.Mapper.mapToResponse<TModel>(entity);
     }
 
-    async deleteById(id: string): Promise<SuccessResponse> {
+    async deleteById(id: string | number): Promise<SuccessResponse> {
         await this.repository.delete.call(this.repository, { where: { id } });
         return { status: true };
     }
@@ -57,7 +58,7 @@ export class CrudService<T extends RepositoryType, TModel = unknown, TDtoCreate 
         return this.Mapper.mapToListResponse<TModel>(await Promise.all(results));
     }
 
-    async deleteManyByIds(ids: string[]): Promise<SuccessResponse> {
+    async deleteManyByIds(ids: (string | number)[]): Promise<SuccessResponse> {
         await this.repository.deleteMany.call(this.repository, { where: { id: { in: ids } } });
         return { status: true };
     }

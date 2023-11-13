@@ -7,6 +7,7 @@ import {
     QueryFilterSortModel,
 } from './query-filter.interface';
 import { set } from 'lodash';
+import { createObjectFromString } from '../../helpers';
 
 const defaultQueryFilterOptions: QueryFilterOptions = {
     limitParamName: 'take',
@@ -126,7 +127,7 @@ export class QueryFilterService {
                     if (isPossibleObject.length > 1) {
                         sort.push(set({}, sortParam, sortDirection));
                     } else {
-                        sort.push({ [sortParam]: sortDirection });
+                        sort.push(createObjectFromString(sortParam, sortDirection));
                     }
                 }
             }
