@@ -96,7 +96,7 @@ export const CrudController = (options: CrudControllerOptions) => {
             description: 'Получение элемента по ID',
             response: options.dto.Read,
         })
-        async findById(@Param('id') id: string): Promise<TRDto | unknown> {
+        async findById(@Param('id') id: string | number): Promise<TRDto | unknown> {
             return this.service.findById(id);
         }
 
@@ -120,7 +120,7 @@ export const CrudController = (options: CrudControllerOptions) => {
             response: options.dto.Read,
             payload: options.dto.Create,
         })
-        async update(@Param('id') id: string, @Body() payload: TUDto): Promise<TRDto | unknown> {
+        async update(@Param('id') id: string | number, @Body() payload: TUDto): Promise<TRDto | unknown> {
             return this.service.update(id, payload);
         }
 
@@ -129,7 +129,7 @@ export const CrudController = (options: CrudControllerOptions) => {
             operation: 'delete',
             description: 'Удаление элемента по ID',
         })
-        async delete(@Param('id') id: string) {
+        async delete(@Param('id') id: string | number) {
             return this.service.deleteById(id);
         }
     }

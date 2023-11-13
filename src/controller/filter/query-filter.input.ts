@@ -14,10 +14,10 @@ export class QueryFilterInput implements QueryFilterModel {
     @Validate.String({ description: 'Сортировка', example: '-id,name' })
     sort: QueryFilterSortModel[];
 
-    @Validate.Object({ description: 'Фильтр полей', type: Object })
+    @Validate.String({ description: 'Фильтр полей' })
     filter: object;
 
-    @Validate.Object({ description: 'Выборка полей', type: Object, example: { name: true } })
+    @Validate.String({ description: 'Выборка полей', example: { name: true } })
     select: QueryFilterSelectModel;
 
     static getOptions(filter: QueryFilterModel) {
