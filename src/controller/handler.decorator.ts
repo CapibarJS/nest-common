@@ -1,4 +1,4 @@
-import {applyDecorators, Delete, Get, HttpCode, Patch, Post, Put, UsePipes, ValidationPipe} from '@nestjs/common';
+import { applyDecorators, Delete, Get, HttpCode, Patch, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
     ApiBody,

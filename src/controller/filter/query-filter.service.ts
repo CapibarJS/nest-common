@@ -6,6 +6,7 @@ import {
     QueryFilterSelectModel,
     QueryFilterSortModel,
 } from './query-filter.interface';
+import { set } from 'lodash';
 import { createObjectFromString } from '../../helpers';
 
 const defaultQueryFilterOptions: QueryFilterOptions = {
@@ -119,7 +120,15 @@ export class QueryFilterService {
                         sortParam = sortParam.substring(1);
                         sortDirection = 'desc';
                     }
-                    sort.push(createObjectFromString(sortParam, sortDirection));
+
+                    // Проверка на объект
+                    const isPossibleObject = sortParam.split('.');
+
+                    if (isPossibleObject.length > 1) {
+                        sort.push(set({}, sortParam, sortDirection));
+                    } else {
+                        sort.push(createObjectFromString(sortParam, sortDirection));
+                    }
                 }
             }
         }
