@@ -11,7 +11,7 @@ export class QueryFilterInput implements QueryFilterModel {
   @Validate.Number({description: 'Сколько элементов нужно взять', isInt: true})
   take: number;
 
-  @Validate.String({description: 'Сортировка', example: '-id,name'})
+  @Validate.String({description: 'Сортировка', example: '-id'})
   sort: QueryFilterSortModel[];
 
   @Validate.String({description: 'Фильтр полей'})
