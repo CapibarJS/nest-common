@@ -5,8 +5,12 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
+    "prebuild": "rimraf dist",
     "build": "tsc",
+    "build:link": "npm run build && npm link",
+    "build:pack": "npm run build && npm pack --pack-destination ~",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "package:pretty": "npx prettier-package-json --write ./package.json",
     "release": "standard-version -a --no-verify",
     "release:major": "standard-version -a --release-as major",
     "release:minor": "standard-version -a --release-as minor",
@@ -23,7 +27,7 @@
     "class-validator": "0.14.0",
     "lodash": "4.17.21",
     "nestjs-form-data": "1.9.0",
-    "nestjs-pino": "3.5.0",
+    "nestjs-pino": "2.5.0",
     "pino": "8.16.1",
     "pino-http": "8.5.1",
     "reflect-metadata": "0.1.13"
