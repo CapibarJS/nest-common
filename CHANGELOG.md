@@ -1,4 +1,11 @@
 # PRO-STROY service
+### 1.2.25 (2024-01-17)
+
+
+### Chore
+
+* **release:** 1.2.24 ([1a13990](https://github.com/CapibarJS/nest-common/commit/1a139900f5a5b41d39aa5bd786f57e9e767db14a))
+
 ### [1.2.24](https://github.com/CapibarJS/nest-common/compare/v1.2.23...v1.2.24) (2024-01-17)
 
 ### 1.2.23 (2023-11-30)
