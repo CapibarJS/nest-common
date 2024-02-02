@@ -123,7 +123,7 @@ function defaultValidateDecorations(options: RootOption) {
     decorates.push(
         apiProperty({
             ...options.apiProperty,
-            ...(swaggerType && { type: () => swaggerType }),
+            ...(swaggerType && { type: swaggerType }),
             ...(options?.objectType && {
                 type: () => options.objectType,
             }),

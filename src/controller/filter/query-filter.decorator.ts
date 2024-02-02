@@ -11,7 +11,7 @@ import { QueryFilterInput } from './query-filter.input';
 // });
 
 export function QueryFilterHandler() {
-    return applyDecorators(ApiQuery({ type: () => QueryFilterInput, required: false }));
+    return applyDecorators(ApiQuery({ type: QueryFilterInput, required: false }));
 }
 
 export const QueryFilter = (data?: Partial<QueryFilterOptions>) => {
