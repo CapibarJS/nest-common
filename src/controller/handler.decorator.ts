@@ -63,9 +63,9 @@ type PatchFileHandlerOptions = PostFileHandlerOptions;
 export class Handler {
     static ApiErrors() {
         return applyDecorators(
-            ApiBadRequestResponse({ type: BadRequestDto }),
-            ApiInternalServerErrorResponse({ type: InternalServerErrorDto }),
-            ApiNotFoundResponse({ type: NotFoundRequest }),
+            ApiBadRequestResponse({ type: () => BadRequestDto }),
+            ApiInternalServerErrorResponse({ type: () => InternalServerErrorDto }),
+            ApiNotFoundResponse({ type: () => NotFoundRequest }),
         );
     }
 
@@ -73,7 +73,7 @@ export class Handler {
         return applyDecorators(
             ///
             HttpCode(200),
-            ApiOkResponse({ type: options.response, isArray: options?.isArray }),
+            ApiOkResponse({ type: () => options.response, isArray: options?.isArray }),
         );
     }
 
@@ -99,7 +99,7 @@ export class Handler {
             Handler.Docs(options),
             Handler.ApiErrors(),
         ];
-        if (options.payload) decorators.push(ApiBody({ type: options.payload, isArray: options.payloadIsArray }));
+        if (options.payload) decorators.push(ApiBody({ type: () => options.payload, isArray: options.payloadIsArray }));
         return applyDecorators(...decorators);
     }
 
@@ -112,7 +112,7 @@ export class Handler {
             Handler.Docs(options),
             Handler.ApiErrors(),
         ];
-        if (options.payload) decorators.push(ApiBody({ type: options.payload, isArray: options.payloadIsArray }));
+        if (options.payload) decorators.push(ApiBody({ type: () => options.payload, isArray: options.payloadIsArray }));
         return applyDecorators(...decorators);
     }
 
@@ -125,7 +125,7 @@ export class Handler {
             Handler.Docs(options),
             Handler.ApiErrors(),
         ];
-        if (options.payload) decorators.push(ApiBody({ type: options.payload, isArray: options.payloadIsArray }));
+        if (options.payload) decorators.push(ApiBody({ type: () => options.payload, isArray: options.payloadIsArray }));
         return applyDecorators(...decorators);
     }
 
