@@ -1,4 +1,11 @@
 # PRO-STROY service
+### 1.2.25 (2024-02-02)
+
+
+### Chore
+
+* fix circular dependencies in type param ([87cb43b](https://github.com/CapibarJS/nest-common/commit/87cb43b28ae1730c6aa114aa1a485cfc2525b835))
+
 ### 1.2.25 (2024-01-17)
 
 
