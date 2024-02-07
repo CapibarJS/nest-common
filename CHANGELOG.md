@@ -1,4 +1,11 @@
 # PRO-STROY service
+## [1.3.0](https://github.com/CapibarJS/nest-common/compare/v1.2.26...v1.3.0) (2024-02-07)
+
+
+### Refactor
+
+* cleaned all left logic ([84fef37](https://github.com/CapibarJS/nest-common/commit/84fef374ed5952175d9ee92c2ff41f1f4ad7964c))
+
 ### 1.2.26 (2024-02-02)
 
 ### 1.2.25 (2024-02-02)
