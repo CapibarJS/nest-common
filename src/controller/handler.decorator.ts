@@ -1,16 +1,5 @@
 import { applyDecorators, Delete, Get, HttpCode, Patch, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
-import {
-    ApiBadRequestResponse,
-    ApiBody,
-    ApiConsumes,
-    ApiInternalServerErrorResponse,
-    ApiNotFoundResponse,
-    ApiOkResponse,
-    ApiOperation,
-} from '@nestjs/swagger';
-import { FormDataRequest } from 'nestjs-form-data';
-import { BadRequestDto, InternalServerErrorDto, NotFoundRequest } from './errors';
-import { SuccessResponse } from './request/shared.dto';
+import { ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
 type HandlerOptionsWrite = {
     /**
@@ -57,18 +46,8 @@ type PostHandlerOptions = HandlerOptions & HandlerOptionsWrite;
 type PatchHandlerOptions = HandlerOptions & HandlerOptionsWrite;
 type GetHandlerOptions = HandlerOptions;
 type DeleteHandlerOptions = HandlerOptions;
-type PostFileHandlerOptions = HandlerOptions & HandlerOptionsWrite;
-type PatchFileHandlerOptions = PostFileHandlerOptions;
 
 export class Handler {
-    static ApiErrors() {
-        return applyDecorators(
-            ApiBadRequestResponse({ type: BadRequestDto }),
-            ApiInternalServerErrorResponse({ type: InternalServerErrorDto }),
-            ApiNotFoundResponse({ type: NotFoundRequest }),
-        );
-    }
-
     static ApiOk(options: HandlerOptionsResponse) {
         return applyDecorators(
             ///
@@ -97,7 +76,6 @@ export class Handler {
             Post(options.path),
             Handler.ApiOk(options),
             Handler.Docs(options),
-            Handler.ApiErrors(),
         ];
         if (options.payload) decorators.push(ApiBody({ type: options.payload, isArray: options.payloadIsArray }));
         return applyDecorators(...decorators);
@@ -110,7 +88,6 @@ export class Handler {
             Patch(options.path),
             Handler.ApiOk(options),
             Handler.Docs(options),
-            Handler.ApiErrors(),
         ];
         if (options.payload) decorators.push(ApiBody({ type: options.payload, isArray: options.payloadIsArray }));
         return applyDecorators(...decorators);
@@ -123,7 +100,6 @@ export class Handler {
             Put(options.path),
             Handler.ApiOk(options),
             Handler.Docs(options),
-            Handler.ApiErrors(),
         ];
         if (options.payload) decorators.push(ApiBody({ type: options.payload, isArray: options.payloadIsArray }));
         return applyDecorators(...decorators);
@@ -136,7 +112,6 @@ export class Handler {
             Get(options.path),
             Handler.ApiOk(options),
             Handler.Docs(options),
-            Handler.ApiErrors(),
         );
     }
 
@@ -145,32 +120,8 @@ export class Handler {
             UsePipes(new ValidationPipe({ transform: true })),
             //
             Delete(options.path),
-            Handler.ApiOk({ response: SuccessResponse, ...options }),
+            Handler.ApiOk({ ...options }),
             Handler.Docs(options),
-            Handler.ApiErrors(),
         );
-    }
-
-    // ----- File ----
-    private static FileMethod(decorator: any, options: PatchFileHandlerOptions | PostFileHandlerOptions) {
-        const { payload, ...opts } = options;
-        const decorators = [
-            UsePipes(new ValidationPipe({ transform: true })),
-            //
-            decorator(opts),
-            FormDataRequest(),
-            ApiConsumes('multipart/form-data'),
-            // UseInterceptors(FileInterceptor('file')),
-        ];
-        if (payload) decorators.push(ApiBody({ schema: payload }));
-        return applyDecorators(...decorators);
-    }
-
-    static PatchFile(options: PatchFileHandlerOptions) {
-        return Handler.FileMethod(Handler.Patch, options);
-    }
-
-    static PostFile(options: PostHandlerOptions) {
-        return Handler.FileMethod(Handler.Post, options);
     }
 }
