@@ -71,7 +71,6 @@ export class Handler {
 
     static Post(options: PostHandlerOptions) {
         const decorators = [
-            UsePipes(new ValidationPipe({ transform: true, validateCustomDecorators: true })),
             //
             Post(options.path),
             Handler.ApiOk(options),
@@ -83,7 +82,6 @@ export class Handler {
 
     static Patch(options: PatchHandlerOptions) {
         const decorators = [
-            UsePipes(new ValidationPipe({ transform: true })),
             //
             Patch(options.path),
             Handler.ApiOk(options),
@@ -95,7 +93,6 @@ export class Handler {
 
     static Put(options: PatchHandlerOptions) {
         const decorators = [
-            UsePipes(new ValidationPipe({ transform: true })),
             //
             Put(options.path),
             Handler.ApiOk(options),
@@ -107,7 +104,6 @@ export class Handler {
 
     static Get(options: GetHandlerOptions) {
         return applyDecorators(
-            UsePipes(new ValidationPipe({ transform: true })),
             //
             Get(options.path),
             Handler.ApiOk(options),
@@ -117,7 +113,6 @@ export class Handler {
 
     static Delete(options: DeleteHandlerOptions) {
         return applyDecorators(
-            UsePipes(new ValidationPipe({ transform: true })),
             //
             Delete(options.path),
             Handler.ApiOk({ ...options }),
