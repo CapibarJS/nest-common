@@ -1,4 +1,11 @@
 # PRO-STROY service
+### [1.3.2](https://github.com/CapibarJS/nest-common/compare/v1.3.1...v1.3.2) (2024-02-20)
+
+
+### Bug Fixes
+
+* **handler.decorator:** removed usePipes ([54ab080](https://github.com/CapibarJS/nest-common/commit/54ab080103f6ef40b283eb9ee5582bad2af10bd8))
+
 ### 1.3.1 (2024-02-07)
 
 ## [1.3.0](https://github.com/CapibarJS/nest-common/compare/v1.2.26...v1.3.0) (2024-02-07)
