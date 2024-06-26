@@ -1,4 +1,11 @@
 # PRO-STROY service
+### [1.3.4](https://github.com/CapibarJS/nest-common/compare/v1.3.3...v1.3.4) (2024-06-26)
+
+
+### Features
+
+* **validator:** added raw json decorator ([e3d3502](https://github.com/CapibarJS/nest-common/commit/e3d35020d8a021a38f5a23d3d3c263cb45e025a1))
+
 ### 1.3.3 (2024-02-20)
 
 

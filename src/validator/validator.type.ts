@@ -1,7 +1,7 @@
 import { ApiPropertyOptions } from '@nestjs/swagger';
 import { TransformFunction } from './transform.cast';
 
-export type ValidationType = 'number' | 'string' | 'boolean' | 'date' | 'object' | 'uuid' | 'mongoId' | 'enum';
+export type ValidationType = 'number' | 'string' | 'boolean' | 'date' | 'object' | 'json' | 'uuid' | 'mongoId' | 'enum';
 
 export type RootOption = {
     type?: ValidationType;
@@ -54,6 +54,7 @@ export type Options = {
         time?: boolean;
     };
     object: ValidateOptions & { type?: any };
+    json: ValidateOptions;
     uuid: ValidateOptions;
     mongoId: ValidateOptions;
     enum: ValidateOptions & { enum: any };
