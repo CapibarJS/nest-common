@@ -20,8 +20,10 @@ import {
     MaxLength,
     Min,
     MinLength,
+    registerDecorator,
     ValidateIf,
     ValidateNested,
+    ValidationArguments,
     ValidationOptions,
 } from 'class-validator';
 import { ApiHideProperty, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
@@ -377,4 +379,37 @@ export class Validate {
 
         return applyDecorators(...decorates);
     }
+
+    /**
+     * Декоратор Json.
+     * @example Нетипизированное поле для работы с сырыми массивами или объектами,
+     * где валидация не важна.
+     * @constructor
+     */
+    static Json(options: Options['json']) {
+        const opt = Validate.getOptions(options, 'json');
+        const decorates = [...defaultValidateDecorations(opt)];
+        decorates.push(IsObjectOrArray());
+
+        return applyDecorators(...decorates);
+    }
+}
+
+function IsObjectOrArray(validationOptions?: ValidationOptions) {
+    return function (object: NonNullable<unknown>, propertyName: string) {
+        registerDecorator({
+            name: 'isObjectOrArray',
+            target: object.constructor,
+            propertyName: propertyName,
+            options: {
+                ...validationOptions,
+                message: 'Must be an object or an array',
+            },
+            validator: {
+                validate(value: any, args: ValidationArguments) {
+                    return typeof value === 'object' && (Array.isArray(value) || !Array.isArray(value));
+                },
+            },
+        });
+    };
 }
